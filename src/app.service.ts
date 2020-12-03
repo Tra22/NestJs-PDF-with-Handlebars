@@ -1,10 +1,22 @@
 import { Injectable } from '@nestjs/common';
 import * as crypto from 'crypto';
+import { PDFOptions, PDFService } from '@t00nday/nestjs-pdf';
 @Injectable()
 export class AppService {
     
+    constructor(private readonly pdfService: PDFService){};
+
     async getViewName():Promise<string>{
         return "index";
+    }
+    pdf;
+    async generatePDFToFile(
+        template: string,
+        filename: string,
+        options?: PDFOptions,
+    ) {
+        
+        return await this.pdfService.toStream(template,  options); // returns Observable<FileInfo>;
     }
 
 

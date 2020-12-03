@@ -1,6 +1,7 @@
-import { Controller, Get,Render, Res } from '@nestjs/common';
+import { Controller, Get,Render, Res, Header,Headers } from '@nestjs/common';
 import { AppService } from './app.service';
 import {Response} from 'express';
+import * as fs from 'fs'
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
@@ -21,5 +22,14 @@ export class AppController {
             'pdf',
             {total:data.total,items:data.items}
         )
+    }
+
+
+    @Get('pdf')
+    @Header('Content-Type','image/pdf')
+    @Header('Content-Disposition', 'attachment; filename=test.pdf')
+    async Getpdf(){
+        //return fs.createReadStream('./test.pdf');
+        return await this.appService.generatePDFToFile("../../nest-handlebars/views","test");
     }
 }
